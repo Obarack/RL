@@ -11,10 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\Environment.hpp" />
     <ClInclude Include="include\RLAction.hpp" />
     <ClInclude Include="include\RLController.hpp" />
     <ClInclude Include="include\RLFAController.hpp" />
@@ -23,6 +19,10 @@
     <ClInclude Include="include\RLSimulator.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\RLAction.cpp" />
+    <ClCompile Include="src\RLFAController.cpp" />
+    <ClCompile Include="src\RLFeature.cpp" />
+    <ClCompile Include="src\RLPlayer.cpp" />
     <ClCompile Include="src\RLSimulator.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
