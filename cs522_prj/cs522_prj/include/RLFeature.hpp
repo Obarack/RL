@@ -1,6 +1,6 @@
 
-#ifndef _RLFEATURES_HPP_
-#define _RLFEATURES_HPP_
+#ifndef _RLFEATURE_HPP_
+#define _RLFEATURE_HPP_
 
 #include "RLPlayer.hpp"
 
@@ -8,15 +8,18 @@
 
 class RLFeature
 {
+public:
+
+	friend class RLPlayer;
+	// called by RLController
+	// updates features
+	void setFeats(const RLPlayer* p1, const RLPlayer* opp);	
+
 private:
 	double feats[NUM_OF_FEATS];
 	double prevFeats[NUM_OF_FEATS];
 	double featWeight[NUM_OF_FEATS];
 
-public:
-	// called by RLController
-	// updates features
-	void setFeats(const RLPlayer*& p1, const RLPlayer*& opp);	
 };
 
 #endif
