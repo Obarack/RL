@@ -4,7 +4,7 @@
 
 #include "RLPlayer.hpp"
 
-#define NUM_OF_FEATS 5
+#define NUM_OF_FEATS 3
 
 class RLFeature
 {
