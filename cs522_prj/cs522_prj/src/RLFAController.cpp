@@ -34,7 +34,10 @@ RLFAController & RLFAController::operator=( const RLFAController &otherCtrl )
 
 void RLFAController::copy( const RLFAController& otherCtrl )
 {
-
+	const RLFeature* c1 = static_cast<RLFeature*>(otherCtrl.feat);
+	feat = new RLFeature(*c1);
+	reward = otherCtrl.reward;
+	prevReward = otherCtrl.prevReward;
 }
 
 void RLFAController::cleanup( void )

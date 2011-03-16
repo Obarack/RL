@@ -22,11 +22,6 @@ public:
 	// called by RLSimulator, 
 	// calls RLController
 	void makeAction(RLPlayer* opp);
-	int* getPos(){ return pos; };
-	void setPos(int* p) { 
-		pos[0]=p[0];
-		pos[1]=p[1];
-	}
 
 	~RLPlayer();
 
@@ -36,12 +31,25 @@ public:
 		act_->setType(ty); 
 		act_->setDamage(dam);	
 	}
+	// get-set pos
+	int* getPos() const { return pos; };
+	void setPos(int* p) { 
+		pos[0]=p[0];
+		pos[1]=p[1];
+	}
+	// get-set health
+	double getHealth() const { return health; }
+	void setHealth(double val) { health = val; }
+
 
 private:
 	RLController* controller;
 	RLAction* act_;
 
 	int* pos;
+	double health;
+
+
 	void copy( const RLPlayer & otherPlayer );
 	void cleanup( void );
 

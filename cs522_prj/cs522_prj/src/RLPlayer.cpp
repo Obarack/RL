@@ -14,6 +14,7 @@ RLPlayer::RLPlayer()
 	pos = new int[2];
 	pos[0] = 0;
 	pos[1] = 0;
+	health = 100;
 }
 
 RLPlayer::RLPlayer(RLController* rlCont, RLAction* rlAct, int* p)
@@ -23,6 +24,7 @@ RLPlayer::RLPlayer(RLController* rlCont, RLAction* rlAct, int* p)
 	pos = new int[2];
 	pos[0] = p[0];
 	pos[1] = p[1];
+	health = 100;
 }
 
 void RLPlayer::makeAction( RLPlayer* opp )
@@ -41,11 +43,11 @@ void RLPlayer::copy( const RLPlayer & otherPlayer )
 	pos = new int[2];
 	const RLFAController* c1 = static_cast<RLFAController*>(otherPlayer.controller);
 	controller = new RLFAController(*c1);
-	//*controller = *otherPlayer.controller;
 	act_ = new RLAction(*otherPlayer.act_);
-	//*act_ = *otherPlayer.act_;
+
 	pos[0] = otherPlayer.pos[0];
 	pos[1] = otherPlayer.pos[1];
+	health = otherPlayer.health;
 }
 
 void RLPlayer::cleanup( void )
