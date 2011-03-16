@@ -11,6 +11,10 @@ class RLFeature
 public:
 
 	friend class RLPlayer;
+
+	RLFeature();
+	RLFeature(const RLFeature &otherFeat);	
+	RLFeature(const RLPlayer* p1, const RLPlayer* opp);
 	// called by RLController
 	// updates features
 	void setFeats(const RLPlayer* p1, const RLPlayer* opp);	
