@@ -15,7 +15,7 @@ public:
 	friend class RLAction;
 
 	RLPlayer();
-	RLPlayer(RLController* rlCont, RLAction* rlAct, int* p);
+	RLPlayer(int* p, double h);
 	RLPlayer(const RLPlayer &otherPlayer);
 	RLPlayer & RLPlayer::operator=( const RLPlayer &otherPlayer );
 
@@ -40,7 +40,8 @@ public:
 	// get-set health
 	double getHealth() const { return health; }
 	void setHealth(double val) { health = val; }
-
+	// get controller
+	RLController* getController(){ return controller; };
 
 private:
 	RLController* controller;

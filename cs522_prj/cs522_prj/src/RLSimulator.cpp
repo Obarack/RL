@@ -3,13 +3,17 @@
 
 RLSimulator::RLSimulator(void)
 {
-	pl1 = new RLPlayer;
-	pl2 = new RLPlayer;
+	int p1pos[2] = {-10,0};
+	int p2pos[2] = {10,0};
+	pl1 = new RLPlayer(p1pos, 100);
+	pl2 = new RLPlayer(p2pos, 100);
+
+	((RLFAController*)(pl1->getController()))->getFeats()->setFeats(pl1, pl2);
 }
 
 void RLSimulator::runSimulation()
 {
-	int step = 1;
+	int step = 2;
 	
 	int* tmp = new int[2];
 	tmp[0] = 1;

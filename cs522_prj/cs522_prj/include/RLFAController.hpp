@@ -16,15 +16,14 @@ public:
 	// called by RLPlayer
 	// calls RLFeature's setFeats fnc
 	void decideAction(const RLPlayer* p1, const RLPlayer* opp);	// from abstract RLController class
-	double qvalue();							// from abstract RLController class
+	double qvalue(double* ft);							// from abstract RLController class
+	RLFeature* getFeats();
 
 private:
 	RLFeature* feat;
-	double reward;
-	double prevReward;
+
 	void copy( const RLFAController& otherCtrl );
 	void cleanup( void );
-
 };
 
 #endif

@@ -17,20 +17,23 @@ RLPlayer::RLPlayer()
 	health = 100;
 }
 
-RLPlayer::RLPlayer(RLController* rlCont, RLAction* rlAct, int* p)
+RLPlayer::RLPlayer(int* p, double h)
 {
-	controller = rlCont;
-	act_ = rlAct;
+	controller = new RLFAController;
+	act_ = new RLAction;
 	pos = new int[2];
 	pos[0] = p[0];
 	pos[1] = p[1];
-	health = 100;
+	health = h;
 }
 
 void RLPlayer::makeAction( RLPlayer* opp )
 {
-	printf("opp->pos: %d, %d\n", opp->getPos()[0], opp->getPos()[1]);
+	printf("this->pos: %d, %d, %f\n", this->getPos()[0], this->getPos()[1], this->getHealth());
+	printf("opp->pos: %d, %d, %f\n", opp->getPos()[0], opp->getPos()[1], opp->getHealth());
 	printf("opp->act: %d, %d\n", opp->getAct()->getAction(), opp->getAct()->getType());
+	
+	controller->decideAction(this, opp);
 }
 
 RLPlayer::~RLPlayer()
@@ -66,3 +69,4 @@ RLPlayer & RLPlayer::operator=( const RLPlayer &otherPlayer )
 	return *this;
 
 }
+

@@ -13,20 +13,37 @@ void RLFeature::setFeats( const RLPlayer* p1, const RLPlayer* opp )
 
 RLFeature::RLFeature(const RLPlayer* p1, const RLPlayer* opp)
 {
+	initializeFeat();
 	setFeats(p1, opp);
 }
 
 RLFeature::RLFeature()
 {
+	feats = new double[NUM_OF_FEATS];
+	prevFeats = new double[NUM_OF_FEATS];
+	featWeight = new double[NUM_OF_FEATS];
+	initializeFeat();
 }
 
 RLFeature::RLFeature( const RLFeature &otherFeat )
 {
+	feats = new double[NUM_OF_FEATS];
+	prevFeats = new double[NUM_OF_FEATS];
+	featWeight = new double[NUM_OF_FEATS];
+
 	for(int i=0; i<NUM_OF_FEATS; i++)
 	{
 		feats[i] = otherFeat.feats[i];
 		prevFeats[i] = otherFeat.prevFeats[i];
 		featWeight[i] = otherFeat.featWeight[i];
+	}
+}
+
+void RLFeature::initializeFeat()
+{
+	for( int i=0; i<NUM_OF_FEATS; i++ ){
+		prevFeats[i] = 0;
+		featWeight[i] = 1;
 	}
 }
 
