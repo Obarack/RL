@@ -13,7 +13,7 @@ RLSimulator::RLSimulator(void)
 
 void RLSimulator::runSimulation()
 {
-	int step = 2;
+	int step = 30;
 	
 	int* tmp = new int[2];
 	tmp[0] = 1;
@@ -21,13 +21,16 @@ void RLSimulator::runSimulation()
 
 	for ( int i=0; i<step; i++ )
 	{
+		int dist= (rand()%2);
 		// store first players state
 		RLPlayer prevP1 = *pl1;
 		pl1->setPos(tmp);
-		pl1->setAct(2, 1, 10);
+		pl1->setAct(2, dist);
+		//p1 select the best action
 		pl1->makeAction(pl2);
-		pl1->makeAction(&prevP1);
-		prevP1.makeAction(pl1);
+		pl2->makeAction(&prevP1);
+
+		((RLFAController*)(pl1->getController()))->updateModel(pl1,pl2);
 	}
 }
 

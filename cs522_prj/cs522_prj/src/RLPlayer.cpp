@@ -31,9 +31,9 @@ void RLPlayer::makeAction( RLPlayer* opp )
 {
 	printf("this->pos: %d, %d, %f\n", this->getPos()[0], this->getPos()[1], this->getHealth());
 	printf("opp->pos: %d, %d, %f\n", opp->getPos()[0], opp->getPos()[1], opp->getHealth());
-	printf("opp->act: %d, %d\n", opp->getAct()->getAction(), opp->getAct()->getType());
+	printf("opp->act: %d, %d\n", opp->getAct()->getAction(), opp->getAct()->getDist());
 	
-	controller->decideAction(this, opp);
+	controller->decideAction(1, 0.8, this, opp);
 }
 
 RLPlayer::~RLPlayer()

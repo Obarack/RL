@@ -26,10 +26,9 @@ public:
 	~RLPlayer();
 
 	RLAction* getAct() const { return act_; }
-	void setAct(int act, int ty, int dam) { 
+	void setAct(int act, const int dist) { 
 		act_->setAction(act);
-		act_->setType(ty); 
-		act_->setDamage(dam);	
+		act_->setDist(dist);
 	}
 	// get-set pos
 	int* getPos() const { return pos; };

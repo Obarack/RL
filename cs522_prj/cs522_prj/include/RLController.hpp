@@ -21,7 +21,7 @@ public:
 		prevReward = 0;
 	};
 
-	virtual void decideAction(const RLPlayer* p1, const RLPlayer* opp)=0;
+	virtual void decideAction(int step, double greedyProb, RLPlayer* p1, const RLPlayer* opp)=0;
 	virtual double qvalue(double* ft)=0;
 
 	// get/set for the member variables
