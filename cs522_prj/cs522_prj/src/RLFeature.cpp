@@ -4,11 +4,15 @@
 void RLFeature::setFeats( const RLPlayer* p1, const RLPlayer* opp )
 {
 	// health
-	feats[0] = p1->getHealth() - opp->getHealth();
+	feats[0] = (p1->getHealth() - opp->getHealth())/100; 
+	//WARNING : FEature normalization!! is it meaningful???
 	// distance in x-direction
 	feats[1] = p1->getPos()[0] - opp->getPos()[0];
 	// distance in y-direction
-	feats[2] = p1->getPos()[1] - opp->getPos()[1];
+	//feats[2] = p1->getPos()[1] - opp->getPos()[1];
+	// damage
+	feats[2] = p1->getAct()->getValue(p1->getAct()->getAction(), p1->getAct()->getDist())/100;
+	//WARNING : FEature normalization!! is it meaningful???
 }
 
 RLFeature::RLFeature(const RLPlayer* p1, const RLPlayer* opp)

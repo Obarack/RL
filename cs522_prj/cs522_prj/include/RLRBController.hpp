@@ -1,19 +1,18 @@
-
-#ifndef _RLFACONTROLLER_HPP_
-#define _RLFACONTROLLER_HPP_
+#ifndef _RLRBCONTROLLER_HPP_
+#define _RLRBCONTROLLER_HPP_
 
 #include "RLController.hpp"
 #include "RLFeature.hpp"
 
-class RLFAController : public RLController
+class RLRBController : public RLController
 {
 
 public:
 	friend class RLFeature;
 
-	RLFAController();
-	RLFAController(const RLFAController &otherCtrl);
-	RLFAController & operator= (const RLFAController &otherCtrl);
+	RLRBController();
+	RLRBController(const RLRBController &otherCtrl);
+	RLRBController & operator= (const RLRBController &otherCtrl);
 
 	// called by RLPlayer
 	// calls RLFeature's setFeats fnc
@@ -22,16 +21,15 @@ public:
 	double qvalue(double* ft);							// from abstract RLController class
 	RLFeature* getFeats();
 
-
 	void updateModel( RLPlayer* p1, const RLPlayer* opp );
 
 private:
 	RLFeature* feat;
 
-	void copy( const RLFAController& otherCtrl );
+	void copy( const RLRBController& otherCtrl );
 	void cleanup( void );
 
-	
+
 };
 
 #endif

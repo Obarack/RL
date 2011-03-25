@@ -4,8 +4,9 @@
 
 #include "RLController.hpp"
 #include "RLFAController.hpp"
+#include "RLRBController.hpp"
 #include "RLAction.hpp"
-
+#include <sstream>
 class RLPlayer
 {
 
@@ -15,21 +16,19 @@ public:
 	friend class RLAction;
 
 	RLPlayer();
-	RLPlayer(int* p, double h);
+	RLPlayer(int* p, double h, int controllerType=0);
 	RLPlayer(const RLPlayer &otherPlayer);
 	RLPlayer & RLPlayer::operator=( const RLPlayer &otherPlayer );
 
 	// called by RLSimulator, 
 	// calls RLController
-	void makeAction(RLPlayer* opp);
+	void makeAction(const RLPlayer* opp);
 
 	~RLPlayer();
 
 	RLAction* getAct() const { return act_; }
-	void setAct(int act, const int dist) { 
-		act_->setAction(act);
-		act_->setDist(dist);
-	}
+	void setAct(int act, int oXPos);
+
 	// get-set pos
 	int* getPos() const { return pos; };
 	void setPos(int* p) { 
@@ -41,6 +40,8 @@ public:
 	void setHealth(double val) { health = val; }
 	// get controller
 	RLController* getController(){ return controller; };
+	double updateHealth(RLAction* oppAct);
+	string toString();
 
 private:
 	RLController* controller;
@@ -49,9 +50,9 @@ private:
 	int* pos;
 	double health;
 
-
 	void copy( const RLPlayer & otherPlayer );
 	void cleanup( void );
+	void updatePos(int dir);
 
 };
 

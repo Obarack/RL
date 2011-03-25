@@ -23,6 +23,7 @@ public:
 
 	virtual void decideAction(int step, double greedyProb, RLPlayer* p1, const RLPlayer* opp)=0;
 	virtual double qvalue(double* ft)=0;
+	virtual void updateModel( RLPlayer* p1, const RLPlayer* opp )=0;
 
 	// get/set for the member variables
 	double getDiscount() const { return discount; }

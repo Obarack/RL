@@ -3,35 +3,37 @@
 
 void RLFAController::decideAction( int step, double greedyProb, RLPlayer* p1, const RLPlayer* opp )
 {
-	double rnd = rand()/RAND_MAX;
+	double rnd = (double)rand()/RAND_MAX;
 
 	int bestAct = 0;
-	RLAction* act = p1->getAct();
+	RLPlayer* pl1 = new RLPlayer(*p1);
+	RLPlayer* pl2 = new RLPlayer(*opp);
+	RLAction* act = pl1->getAct();
 
 	if (rnd < greedyProb)
 	{
-		p1->setAct(0,act->getDist());
-		// compute new feature vals
-		feat->setFeats(p1, opp);
+		pl1->setAct(0, pl2->getPos()[0]);
+		// compute new feature values
+		feat->setFeats(pl1, opp);
 		double bestQValue = qvalue(feat->getFeats());
 		double tempQValue = 0;
 		
 		for (int i=1; i<RLAction::ACTION_COUNT; i++)
 		{
-			p1->setAct(i,act->getDist());
-			// compute new feature vals
-			feat->setFeats(p1, opp);
+			pl1->setAct(i, pl2->getPos()[0]);
+			// compute new feature values
+			feat->setFeats(pl1, opp);
 			tempQValue = qvalue(feat->getFeats());
 			if(bestQValue < tempQValue ){
 				bestAct = i;
 				bestQValue = tempQValue;
 			}
 		}
-	}else{
-
+	}
+	else{
 		bestAct = rand()%RLAction::ACTION_COUNT;
 	}
-	p1->setAct(bestAct, act->getDist());//set the action to the one that gives best q value
+	p1->setAct(bestAct, pl2->getPos()[0]);//set the action to the one that gives best q value
 	//updateModel(p1, opp);	
 }
 
@@ -44,13 +46,12 @@ double RLFAController::qvalue( double* ft )
 	return qTotal;
 }
 // do-step in FAController
-void RLFAController::updateModel( const RLPlayer* p1, const RLPlayer* opp ) 
+void RLFAController::updateModel( RLPlayer* p1, const RLPlayer* opp )
 {
-
-	// compute new feature vals
+	// compute new feature values
 	feat->setFeats(p1, opp);
 
-	// compute delta by first computing q-vals
+	// compute delta by first computing q-values
 	double delta = getPrevReward()+ getDiscount()*qvalue(feat->getFeats()) - qvalue(feat->getPrevFeat());
 
 	// update feature weights
@@ -64,8 +65,12 @@ void RLFAController::updateModel( const RLPlayer* p1, const RLPlayer* opp )
 	// set previous features
 	feat->setPrevFeat(feat->getFeats());
 
+
+	int m_dist = abs(opp->getPos()[0] - p1->getPos()[0]);
+	p1->getAct()->setDist(m_dist);
+	double rwd = p1->updateHealth(opp->getAct());
 	// set reward
-	setPrevReward(p1->getAct()->getValue(p1->getAct()->getAction(),p1->getAct()->getDist()));
+	setPrevReward(rwd);
 }
 
 RLFAController::RLFAController() /*: RLController()*/
@@ -86,7 +91,6 @@ RLFAController & RLFAController::operator=( const RLFAController &otherCtrl )
 		copy( otherCtrl );
 	}
 	return *this;
-
 }
 
 void RLFAController::copy( const RLFAController& otherCtrl )

@@ -16,6 +16,7 @@
     <ClInclude Include="include\RLFAController.hpp" />
     <ClInclude Include="include\RLFeature.hpp" />
     <ClInclude Include="include\RLPlayer.hpp" />
+    <ClInclude Include="include\RLRBController.hpp" />
     <ClInclude Include="include\RLSimulator.h" />
   </ItemGroup>
   <ItemGroup>
@@ -23,6 +24,7 @@
     <ClCompile Include="src\RLFAController.cpp" />
     <ClCompile Include="src\RLFeature.cpp" />
     <ClCompile Include="src\RLPlayer.cpp" />
+    <ClCompile Include="src\RLRBController.cpp" />
     <ClCompile Include="src\RLSimulator.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -13,6 +13,26 @@ RLAction::RLAction( const RLAction &otherAct )
 	dist = otherAct.dist;
 }
 
+void RLAction::setAction(int val) 
+{ 
+	action = val; 
+	if (action<=U_CUT)
+		setType(OFF);
+	else if (action<=BLOCK)
+		setType(DEF);
+	else if (action<=RUN_B)
+		setType(NEU);
+}
+
+void RLAction::setDist(int val) 
+{ 
+	if ( val < 2 )
+		dist = CLOSE;
+	else if ( val < 3 )
+		dist = NEAR;
+	else dist = FAR;
+}
+
 void RLAction::setVars()
 {
 	value = new double*[ACTION_COUNT];
@@ -25,6 +45,14 @@ void RLAction::setVars()
 			setVals(i, 100, 25, 0);
 		else if(i==BLOCK)
 			setVals(i, 20, 10, 0);
+		else if(i==WALK_F)
+			setVals(i, 0, 5, 10);
+		else if(i==WALK_B)
+			setVals(i, 10, 5, 0);
+		else if(i==RUN_F)
+			setVals(i, 0, 0, 20);
+		else if(i==RUN_B)
+			setVals(i, 5, 2, 0);
 	}
 
 }
