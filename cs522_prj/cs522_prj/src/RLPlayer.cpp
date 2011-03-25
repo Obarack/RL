@@ -109,9 +109,11 @@ double RLPlayer::updateHealth( RLAction* oppAct )
 				rwd = myActVal-oActVal;		// then I'm rewarded by the amount of that damage
 			else							// if I couldn't hit
 				rwd = myActVal;				// then no reward or punishment
-		else if (act_->getType()==RLAction::NEU)	// if I walk or run when my opponent defends itself
+		else if (act_->getType()==RLAction::NEU 
+			&& (act_->getAction()==RLAction::WALK_F || 
+			act_->getAction()==RLAction::RUN_F ))	// if I walk or run when my opponent defends itself
 			rwd = myActVal;							// then I'm awarded by the amount of my neutral action
-		// WARNING: consider walking/running backward&forward, yakinlasiyo vs uzaklasiyo 
+		// WARNING-Resolved: consider walking/running backward&forward, yakinlasiyo vs uzaklasiyo 
 	}
 	else if (o_ActType == RLAction::NEU)
 	{
@@ -120,6 +122,14 @@ double RLPlayer::updateHealth( RLAction* oppAct )
 				rwd = myActVal;				// then I'm awarded by the amount of that damage
 			else							// if I couldn't make damage
 				rwd = -oActVal;				// then I'm punished by the amount of my opponent's action value
+		else if (act_->getType()==RLAction::DEF)	// if I defend while my opponent acts neutrally
+			rwd = -oActVal;							// i'm punished
+		else if (act_->getType()==RLAction::NEU)		// if both of us act neutrally
+			if (act_->getAction()==RLAction::WALK_B ||	// and if I walk/run away from my opponent
+				act_->getAction()==RLAction::RUN_B )
+				rwd = -myActVal;			// I'm punished by the amount of his action's value
+			else
+				rwd = myActVal;				// or I'm awarded by the amount of my action's value
 	}
 
 	return rwd;

@@ -14,7 +14,7 @@ RLSimulator::RLSimulator(void)
 
 void RLSimulator::runSimulation()
 {
-	int step = 10;
+	int step = 100;
 	
 	int* tmp = new int[2];
 	tmp[0] = 1;
