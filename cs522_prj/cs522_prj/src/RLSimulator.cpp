@@ -1,5 +1,5 @@
 #include "../include/RLSimulator.h"
-
+#include <fstream>
 
 RLSimulator::RLSimulator(void)
 {
@@ -14,14 +14,14 @@ RLSimulator::RLSimulator(void)
 
 void RLSimulator::runSimulation()
 {
-	int step = 100;
+	int step = 100000;
 	
 	int* tmp = new int[2];
 	tmp[0] = 1;
 	tmp[1] = 2;
 
-	cout<< "Player FA : "<< pl1->toString();
-	cout<< "Player RB : "<< pl2->toString();
+	/*cout<< "Player FA : "<< pl1->toString();
+	cout<< "Player RB : "<< pl2->toString();*/
 
 	for ( int i=0; i<step; i++ )
 	{
@@ -35,9 +35,16 @@ void RLSimulator::runSimulation()
 		((RLFAController*)(pl1->getController()))->updateModel(pl1,pl2);
 		((RLRBController*)(pl2->getController()))->updateModel(pl2,pl1);
 
-		cout<< "Player FA : "<< pl1->toString();
-		cout<< "Player RB : "<< pl2->toString();
+	/*	cout<< "Player FA : "<< pl1->toString();
+		cout<< "Player RB : "<< pl2->toString();*/
 	}
+
+	ofstream myfile;
+	myfile.open ("Rewards.txt");
+	vector<double> rewards = pl1->getController()->getAllReward();
+	for( int i = 0; i< rewards.size(); i++ )
+		myfile <<rewards.at(i) << endl;
+	myfile.close();
 }
 
 

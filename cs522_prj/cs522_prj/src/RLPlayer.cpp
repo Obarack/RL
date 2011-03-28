@@ -12,9 +12,14 @@ RLPlayer::RLPlayer()
 	controller = new RLFAController;
 	act_ = new RLAction;
 	pos = new int[2];
+	prevPos = new int[2];
 	pos[0] = 0;
 	pos[1] = 0;
+	prevPos[0] = 0;
+	prevPos[1] = 0;
 	health = 100;
+	prevHealth = 100;
+	isHit = -1;
 }
 
 RLPlayer::RLPlayer(int* p, double h, int controllerType)
@@ -24,10 +29,17 @@ RLPlayer::RLPlayer(int* p, double h, int controllerType)
 	else if (controllerType==1)
 		controller = new RLRBController;
 	act_ = new RLAction;
+	prevAct_ = new RLAction;
+
 	pos = new int[2];
 	pos[0] = p[0];
 	pos[1] = p[1];
+	prevPos = new int[2];
+	prevPos[0] = p[0];
+	prevPos[1] = p[1];
 	health = h;
+	prevHealth = health;
+	isHit = -1;
 }
 
 void RLPlayer::makeAction( const RLPlayer* opp )
@@ -47,13 +59,20 @@ RLPlayer::~RLPlayer()
 void RLPlayer::copy( const RLPlayer & otherPlayer )
 {
 	pos = new int[2];
+	prevPos = new int[2];
 	const RLFAController* c1 = static_cast<RLFAController*>(otherPlayer.controller);
 	controller = new RLFAController(*c1);
 	act_ = new RLAction(*otherPlayer.act_);
+	prevAct_ = new RLAction(*otherPlayer.prevAct_);
 
 	pos[0] = otherPlayer.pos[0];
 	pos[1] = otherPlayer.pos[1];
+	prevPos[0] = otherPlayer.prevPos[0];
+	prevPos[1] = otherPlayer.prevPos[1];
+
 	health = otherPlayer.health;
+	prevHealth = otherPlayer.prevHealth;
+	isHit = otherPlayer.isHit;
 }
 
 void RLPlayer::cleanup( void )
@@ -61,6 +80,14 @@ void RLPlayer::cleanup( void )
 	delete controller;
 	delete act_;
 	delete pos;
+	delete prevPos;
+	delete prevAct_;
+
+	controller = NULL;
+	act_ = NULL;
+	pos = NULL;
+	prevPos = NULL;
+	prevAct_ = NULL;
 }
 
 RLPlayer & RLPlayer::operator=( const RLPlayer &otherPlayer )
@@ -74,6 +101,9 @@ RLPlayer & RLPlayer::operator=( const RLPlayer &otherPlayer )
 
 double RLPlayer::updateHealth( RLAction* oppAct )
 {
+	// store previous health
+	setPrevHealth(this->health);
+
 	int o_ActType = oppAct->getType();
 	double oActVal = oppAct->getValue(oppAct->getAction(), this->act_->getDist());
 	double myActVal = this->act_->getValue(this->act_->getAction(), this->act_->getDist());
@@ -137,6 +167,8 @@ double RLPlayer::updateHealth( RLAction* oppAct )
 
 void RLPlayer::setAct( int act, int oXPos )
 { 
+	setPrevAction();
+
 	act_->setAction(act);
 	int actType = act_->getType();
 	int dir = oXPos-getPos()[0];
@@ -152,6 +184,7 @@ void RLPlayer::setAct( int act, int oXPos )
 
 void RLPlayer::updatePos( int dir )
 {
+	setPrevPos(pos);
 	if (act_->getAction() == RLAction::WALK_F)
 		pos[0] += dir*1;
 	else if (act_->getAction() == RLAction::WALK_B)

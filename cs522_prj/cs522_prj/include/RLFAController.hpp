@@ -25,6 +25,8 @@ public:
 
 	void updateModel( RLPlayer* p1, const RLPlayer* opp );
 
+	double checkBorder( RLPlayer* p1 ) ;
+
 private:
 	RLFeature* feat;
 

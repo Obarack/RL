@@ -3,32 +3,54 @@
 
 void RLRBController::decideAction( int step, double greedyProb, RLPlayer* p1, const RLPlayer* opp )
 {
+	//int bestAct = rand()%RLAction::ACTION_COUNT;
+	//p1->setAct(1, opp->getPos()[0]);
 	double rnd = (double) rand()/RAND_MAX;
 	int dis = p1->getAct()->getDist();
 
-	cout << "RB rand " << rnd<< endl;
+	//cout << "RB rand " << rnd<< endl;
 	if(dis == RLAction::CLOSE)
-		if(rnd < 0.5)
+		if(rnd < 0.8)
 			p1->setAct(RLAction::U_CUT, opp->getPos()[0]);
-		else if (rnd < 0.8 )
-			p1->setAct(RLAction::L_KICK, opp->getPos()[0]);
-		else if (rnd < 0.9)
-			p1->setAct(RLAction::WALK_B, opp->getPos()[0]);
-		else
+		else if (rnd < 1 )
 			p1->setAct(RLAction::BLOCK, opp->getPos()[0]);
-
 	else if(dis == RLAction::NEAR)
-		if(rnd < 0.5)
+		if(rnd < 0.8)
 			p1->setAct(RLAction::L_KICK, opp->getPos()[0]);
-		else if (rnd < 0.8 )
-			p1->setAct(RLAction::BLOCK, opp->getPos()[0]);
-		else
+		else if (rnd < 1 )
 			p1->setAct(RLAction::WALK_F, opp->getPos()[0]);
 	else
 		if(rnd < 0.7)
 			p1->setAct(RLAction::RUN_F, opp->getPos()[0]);
 		else
 			p1->setAct(RLAction::WALK_F, opp->getPos()[0]);
+
+	//double rnd = (double) rand()/RAND_MAX;
+	//int dis = p1->getAct()->getDist();
+
+	//cout << "RB rand " << rnd<< endl;
+	//if(dis == RLAction::CLOSE)
+	//	if(rnd < 0.5)
+	//		p1->setAct(RLAction::U_CUT, opp->getPos()[0]);
+	//	else if (rnd < 0.8 )
+	//		p1->setAct(RLAction::L_KICK, opp->getPos()[0]);
+	//	else if (rnd < 0.9)
+	//		p1->setAct(RLAction::WALK_B, opp->getPos()[0]);
+	//	else
+	//		p1->setAct(RLAction::BLOCK, opp->getPos()[0]);
+
+	//else if(dis == RLAction::NEAR)
+	//	if(rnd < 0.5)
+	//		p1->setAct(RLAction::L_KICK, opp->getPos()[0]);
+	//	else if (rnd < 0.8 )
+	//		p1->setAct(RLAction::BLOCK, opp->getPos()[0]);
+	//	else
+	//		p1->setAct(RLAction::WALK_F, opp->getPos()[0]);
+	//else
+	//	if(rnd < 0.7)
+	//		p1->setAct(RLAction::RUN_F, opp->getPos()[0]);
+	//	else
+	//		p1->setAct(RLAction::WALK_F, opp->getPos()[0]);
 }
 
 double RLRBController::qvalue( double* ft )

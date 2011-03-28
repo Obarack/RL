@@ -52,7 +52,7 @@ void RLFAController::updateModel( RLPlayer* p1, const RLPlayer* opp )
 	feat->setFeats(p1, opp);
 
 	// compute delta by first computing q-values
-	double delta = getPrevReward()+ getDiscount()*qvalue(feat->getFeats()) - qvalue(feat->getPrevFeat());
+	double delta = getPrevReward()/100.0+ getDiscount()*qvalue(feat->getFeats()) - qvalue(feat->getPrevFeat());
 
 	// update feature weights
 	double* newW = new double[NUM_OF_FEATS];
@@ -60,17 +60,43 @@ void RLFAController::updateModel( RLPlayer* p1, const RLPlayer* opp )
 		newW[i] = feat->getFeatWeight()[i] + getAlpha()*delta*feat->getPrevFeat()[i];
 
 	feat->setFeatWeight(newW);
-	printf("w[0]=%f, w[1]=%f, w[2]=%f\n", feat->getFeatWeight()[0], 
-		feat->getFeatWeight()[1], feat->getFeatWeight()[2]);
+	printf("w[0]=%f, w[1]=%f, w[2]=%f, w[3]=%f\n", feat->getFeatWeight()[0], 
+		feat->getFeatWeight()[1], feat->getFeatWeight()[2],feat->getFeatWeight()[3]);
+	//cout<< "Player 1 isHit" << p1->getHit()<<endl;
 	// set previous features
 	feat->setPrevFeat(feat->getFeats());
 
+	double wallPun = checkBorder(p1);
 
 	int m_dist = abs(opp->getPos()[0] - p1->getPos()[0]);
 	p1->getAct()->setDist(m_dist);
 	double rwd = p1->updateHealth(opp->getAct());
-	// set reward
-	setPrevReward(rwd);
+	// set reward. add up if the player hits the walls
+	setPrevReward(rwd+wallPun);	
+
+}
+
+double RLFAController::checkBorder( RLPlayer* p1 )
+{
+	double wallPun = 0;
+	int* newP = p1->getPos();
+	p1->setHit(-1);
+
+	if (newP[0] > getBorder()[1])
+	{
+		newP[0] = getBorder()[1];
+		p1->setPos(newP);
+		wallPun = -10;
+		p1->setHit(1);
+	}
+	else if (newP[0] < getBorder()[0])
+	{
+		newP[0] = getBorder()[0];
+		p1->setPos(newP);
+		wallPun = -10;
+		p1->setHit(1);
+	}
+	return wallPun;
 }
 
 RLFAController::RLFAController() /*: RLController()*/
@@ -80,7 +106,7 @@ RLFAController::RLFAController() /*: RLController()*/
 
 RLFAController::RLFAController( const RLFAController &otherCtrl )
 {
-	printf("fa cc\n");
+	//printf("fa cc\n");
 	copy(otherCtrl);
 }
 

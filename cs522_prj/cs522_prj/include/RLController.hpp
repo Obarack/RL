@@ -4,6 +4,7 @@
 
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -19,6 +20,10 @@ public:
 		alpha = 0.1;
 		reward = 0;
 		prevReward = 0;
+		// borders of the playground on x-axis
+		border = new int[2];
+		border[0] = 0;
+		border[1] = 10;
 	};
 
 	virtual void decideAction(int step, double greedyProb, RLPlayer* p1, const RLPlayer* opp)=0;
@@ -35,7 +40,10 @@ public:
 	double getReward() const { return reward; }
 	void setReward(double val) { reward = val; }
 	double getPrevReward() const { return prevReward; }
-	void setPrevReward(double val) { prevReward = val; }
+	void setPrevReward(double val) { prevReward = val; allReward.push_back(prevReward); }
+	vector<double> getAllReward() const { return allReward; }
+	void setAllReward(vector<double> val) { allReward = val; }
+	int* getBorder() const { return border; }
 
 private:
 	string name;
@@ -46,7 +54,9 @@ private:
 	double alpha;
 	double reward;
 	double prevReward;
-
+	vector<double> allReward;
+	int* border;
+	
 };
 
 #endif

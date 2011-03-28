@@ -33,6 +33,11 @@ void RLAction::setDist(int val)
 	else dist = FAR;
 }
 
+//void RLAction::setPrevDist() 
+//{ 
+//	prevDist = dist;
+//}
+
 void RLAction::setVars()
 {
 	value = new double*[ACTION_COUNT];
@@ -40,17 +45,18 @@ void RLAction::setVars()
 	{
 		value[i] = new double[3];
 		if(i==L_KICK)
-			setVals(i, 50, 100, 0);
+			setVals(i, 5, 10, 0);
 		else if(i==U_CUT)
-			setVals(i, 100, 25, 0);
+			setVals(i, 10, 5, 0);
+			//setVals(i, 50, 15, 0);
 		else if(i==BLOCK)
-			setVals(i, 20, 10, 0);
+			setVals(i, 8, 10, 0);
 		else if(i==WALK_F)
 			setVals(i, 0, 5, 10);
 		else if(i==WALK_B)
 			setVals(i, 10, 5, 0);
 		else if(i==RUN_F)
-			setVals(i, 0, 0, 20);
+			setVals(i, 0, 0, 8);
 		else if(i==RUN_B)
 			setVals(i, 5, 2, 0);
 	}

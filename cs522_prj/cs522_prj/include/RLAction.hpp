@@ -46,6 +46,8 @@ public:
 	double getValue(int act, int dist) const { return value[act][dist]; }
 	int getDist() const { return dist; }
 	void setDist(int val);
+	//int getPrevDist() const { return prevDist; }
+	//void setPrevDist();
 
 private:
 
@@ -56,6 +58,7 @@ private:
 	double** value;
 	// 
 	int dist;
+	//int prevDist;
 	
 	void setVars();
 	void setVals(int act, double dc, double dn, double gf);
