@@ -42,13 +42,10 @@ RLPlayer::RLPlayer(int* p, double h, int controllerType)
 	isHit = -1;
 }
 
-void RLPlayer::makeAction( const RLPlayer* opp )
+int RLPlayer::makeAction( const RLPlayer* opp )
 {
-	//printf("this->pos: %d, %d, %f\n", this->getPos()[0], this->getPos()[1], this->getHealth());
-	//printf("opp->pos: %d, %d, %f\n", opp->getPos()[0], opp->getPos()[1], opp->getHealth());
-	//printf("opp->act: %d, %d\n", opp->getAct()->getAction(), opp->getAct()->getDist());
-
-	controller->decideAction(1, 0.8, this, opp);
+	int bestAct = controller->decideAction(1, 0.8, this, opp);
+	return bestAct;
 }
 
 RLPlayer::~RLPlayer()
@@ -173,6 +170,9 @@ void RLPlayer::setAct( int act, int oXPos )
 	int actType = act_->getType();
 	int dir = oXPos-getPos()[0];
 
+	// set the current distance before taking any action
+	act_->setDist(abs(dir));
+
 	if (dir==0)
 		dir = 1;
 
@@ -199,9 +199,9 @@ std::string RLPlayer::toString()
 {
 	stringstream out;
 
-	out<< " Position is x = " << pos[0] << " y = " << pos[1];
-	out<< " H =" << health ;
-	out<< " A = " << act_->getAction() << " D = " << act_->getDist()<<endl;
+	out<< " x = " << pos[0] << "\ty = " << pos[1];
+	out<< "\tH = " << health ;
+	out<< "\tA = " << act_->getAction() << "\tD = " << act_->getDist()<<endl;
 
 	return out.str();
 }

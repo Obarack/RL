@@ -1,6 +1,8 @@
 #include "../include/RLAction.hpp"
 
-RLAction::RLAction(): action(L_KICK), dist(0)
+double** RLAction::value;
+
+RLAction::RLAction(): action(L_KICK), dist(0), type(0)
 {
 	setVars();
 }
@@ -9,7 +11,7 @@ RLAction::RLAction( const RLAction &otherAct )
 {
 	action = otherAct.action;
 	type = otherAct.type;
-	value = otherAct.value;
+	//value = new double**(otherAct.value);
 	dist = otherAct.dist;
 }
 
@@ -26,6 +28,7 @@ void RLAction::setAction(int val)
 
 void RLAction::setDist(int val) 
 { 
+	setPrevDist();
 	if ( val < 2 )
 		dist = CLOSE;
 	else if ( val < 3 )
@@ -33,10 +36,10 @@ void RLAction::setDist(int val)
 	else dist = FAR;
 }
 
-//void RLAction::setPrevDist() 
-//{ 
-//	prevDist = dist;
-//}
+void RLAction::setPrevDist() 
+{ 
+	prevDist = dist;
+}
 
 void RLAction::setVars()
 {

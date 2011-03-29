@@ -46,8 +46,8 @@ public:
 	double getValue(int act, int dist) const { return value[act][dist]; }
 	int getDist() const { return dist; }
 	void setDist(int val);
-	//int getPrevDist() const { return prevDist; }
-	//void setPrevDist();
+	int getPrevDist() const { return prevDist; }
+	void setPrevDist();
 
 private:
 
@@ -55,10 +55,10 @@ private:
 	// 0 - offensive, 1 - defensive, 2 - neutral
 	int type;
 	// for offensive actions
-	double** value;
+	static double** value;
 	// 
 	int dist;
-	//int prevDist;
+	int prevDist;
 	
 	void setVars();
 	void setVals(int act, double dc, double dn, double gf);

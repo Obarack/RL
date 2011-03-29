@@ -1,30 +1,37 @@
 
 #include "../include/RLRBController.hpp"
 
-void RLRBController::decideAction( int step, double greedyProb, RLPlayer* p1, const RLPlayer* opp )
+int RLRBController::decideAction( int step, double greedyProb, RLPlayer* p1, const RLPlayer* opp )
 {
 	//int bestAct = rand()%RLAction::ACTION_COUNT;
 	//p1->setAct(1, opp->getPos()[0]);
 	double rnd = (double) rand()/RAND_MAX;
 	int dis = p1->getAct()->getDist();
+	int bestAct = -1;
 
 	//cout << "RB rand " << rnd<< endl;
-	if(dis == RLAction::CLOSE)
+	if(dis == RLAction::CLOSE) 
+	{
 		if(rnd < 0.8)
-			p1->setAct(RLAction::U_CUT, opp->getPos()[0]);
+			bestAct = RLAction::U_CUT;
 		else if (rnd < 1 )
-			p1->setAct(RLAction::BLOCK, opp->getPos()[0]);
+			bestAct = RLAction::BLOCK;
+	}
 	else if(dis == RLAction::NEAR)
+	{
 		if(rnd < 0.8)
-			p1->setAct(RLAction::L_KICK, opp->getPos()[0]);
+			bestAct = RLAction::L_KICK;
 		else if (rnd < 1 )
-			p1->setAct(RLAction::WALK_F, opp->getPos()[0]);
+			bestAct = RLAction::WALK_F;
+	}
 	else
+	{
 		if(rnd < 0.7)
-			p1->setAct(RLAction::RUN_F, opp->getPos()[0]);
+			bestAct = RLAction::RUN_F;
 		else
-			p1->setAct(RLAction::WALK_F, opp->getPos()[0]);
-
+			bestAct = RLAction::WALK_F;
+	}
+	return bestAct;
 	//double rnd = (double) rand()/RAND_MAX;
 	//int dis = p1->getAct()->getDist();
 
@@ -62,7 +69,7 @@ double RLRBController::qvalue( double* ft )
 	return qTotal;
 }
 // do-step in FAController
-void RLRBController::updateModel( RLPlayer* p1, const RLPlayer* opp )
+void RLRBController::updateModel( RLPlayer*& p1, RLPlayer*& opp, int bestAct )
 {
 	int m_dist = abs(opp->getPos()[0] - p1->getPos()[0]);
 	p1->getAct()->setDist(m_dist);
@@ -96,6 +103,7 @@ void RLRBController::copy( const RLRBController& otherCtrl )
 	feat = new RLFeature(*c1);
 	setReward(otherCtrl.getReward());
 	setPrevReward(otherCtrl.getPrevReward());
+	delete c1; c1 = NULL;
 }
 
 void RLRBController::cleanup( void )

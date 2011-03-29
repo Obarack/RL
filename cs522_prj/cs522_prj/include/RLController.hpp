@@ -26,9 +26,9 @@ public:
 		border[1] = 10;
 	};
 
-	virtual void decideAction(int step, double greedyProb, RLPlayer* p1, const RLPlayer* opp)=0;
+	virtual int decideAction(int step, double greedyProb, RLPlayer* p1, const RLPlayer* opp)=0;
 	virtual double qvalue(double* ft)=0;
-	virtual void updateModel( RLPlayer* p1, const RLPlayer* opp )=0;
+	virtual void updateModel( RLPlayer*& p1, RLPlayer*& opp, int bestAct )=0;
 
 	// get/set for the member variables
 	double getDiscount() const { return discount; }
@@ -44,6 +44,7 @@ public:
 	vector<double> getAllReward() const { return allReward; }
 	void setAllReward(vector<double> val) { allReward = val; }
 	int* getBorder() const { return border; }
+	double checkBorder( RLPlayer*& p1 );
 
 private:
 	string name;

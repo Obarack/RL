@@ -22,6 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\RLAction.cpp" />
+    <ClCompile Include="src\RLController.cpp" />
     <ClCompile Include="src\RLFAController.cpp" />
     <ClCompile Include="src\RLFeature.cpp" />
     <ClCompile Include="src\RLPlayer.cpp" />

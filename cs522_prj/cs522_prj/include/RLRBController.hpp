@@ -16,12 +16,10 @@ public:
 
 	// called by RLPlayer
 	// calls RLFeature's setFeats fnc
-	void decideAction(int step, double greedyProb, RLPlayer* p1, const RLPlayer* opp);	// from abstract RLController class
-
+	int decideAction(int step, double greedyProb, RLPlayer* p1, const RLPlayer* opp);	// from abstract RLController class
 	double qvalue(double* ft);							// from abstract RLController class
 	RLFeature* getFeats();
-
-	void updateModel( RLPlayer* p1, const RLPlayer* opp );
+	void updateModel( RLPlayer*& p1, RLPlayer*& opp, int bestAct );
 
 private:
 	RLFeature* feat;

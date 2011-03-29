@@ -7,6 +7,7 @@
 #include "RLRBController.hpp"
 #include "RLAction.hpp"
 #include <sstream>
+
 class RLPlayer
 {
 
@@ -22,7 +23,7 @@ public:
 
 	// called by RLSimulator, 
 	// calls RLController
-	void makeAction(const RLPlayer* opp);
+	int makeAction(const RLPlayer* opp);
 
 	~RLPlayer();
 
@@ -30,18 +31,21 @@ public:
 	void setAct(int act, int oXPos);
 
 	RLAction* getPrevAct() const{ return prevAct_;}
-	void setPrevAction(){ *prevAct_ = *act_;}
+	void setPrevAction(){ 
+		delete prevAct_; prevAct_ = NULL; 
+		prevAct_ = new RLAction(*act_);
+	}
 
 	// get-set pos
 	int* getPos() const { return pos; };
-	void setPos(int* p) { 
+	void setPos(int*& p) { 
 		setPrevPos(pos);	// store previous position
 		pos[0] = p[0];
 		pos[1] = p[1];
 	}
 	// get/set previous position
 	int* getPrevPos() const { return prevPos; };
-	void setPrevPos(int* p) { 
+	void setPrevPos(int*& p) { 
 		prevPos[0] = p[0];
 		prevPos[1] = p[1];
 	}

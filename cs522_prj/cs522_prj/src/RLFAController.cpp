@@ -1,14 +1,13 @@
 
 #include "../include/RLFAController.hpp"
 
-void RLFAController::decideAction( int step, double greedyProb, RLPlayer* p1, const RLPlayer* opp )
+int RLFAController::decideAction( int step, double greedyProb, RLPlayer* p1, const RLPlayer* opp )
 {
 	double rnd = (double)rand()/RAND_MAX;
 
-	int bestAct = 0;
+	int bestAct = -1;
 	RLPlayer* pl1 = new RLPlayer(*p1);
 	RLPlayer* pl2 = new RLPlayer(*opp);
-	RLAction* act = pl1->getAct();
 
 	if (rnd < greedyProb)
 	{
@@ -33,8 +32,14 @@ void RLFAController::decideAction( int step, double greedyProb, RLPlayer* p1, co
 	else{
 		bestAct = rand()%RLAction::ACTION_COUNT;
 	}
-	p1->setAct(bestAct, pl2->getPos()[0]);//set the action to the one that gives best q value
+	//p1->setAct(bestAct, pl2->getPos()[0]);	//set the action to the one that gives best q value
 	//updateModel(p1, opp);	
+	delete pl1;
+	delete pl2;
+	pl1 = NULL;
+	pl2 = NULL;
+
+	return bestAct;
 }
 
 double RLFAController::qvalue( double* ft )
@@ -46,8 +51,12 @@ double RLFAController::qvalue( double* ft )
 	return qTotal;
 }
 // do-step in FAController
-void RLFAController::updateModel( RLPlayer* p1, const RLPlayer* opp )
+void RLFAController::updateModel( RLPlayer*& p1, RLPlayer*& opp, int bestAct )
 {
+	//int m_dist = abs(opp->getPos()[0] - p1->getPos()[0]);
+	//p1->getAct()->setDist(m_dist);
+	double wallPun = checkBorder(p1);
+
 	// compute new feature values
 	feat->setFeats(p1, opp);
 
@@ -60,43 +69,18 @@ void RLFAController::updateModel( RLPlayer* p1, const RLPlayer* opp )
 		newW[i] = feat->getFeatWeight()[i] + getAlpha()*delta*feat->getPrevFeat()[i];
 
 	feat->setFeatWeight(newW);
-	printf("w[0]=%f, w[1]=%f, w[2]=%f, w[3]=%f\n", feat->getFeatWeight()[0], 
-		feat->getFeatWeight()[1], feat->getFeatWeight()[2],feat->getFeatWeight()[3]);
+	//printf("w[0]=%f, w[1]=%f, w[2]=%f, w[3]=%f\n", feat->getFeatWeight()[0], 
+	//	feat->getFeatWeight()[1], feat->getFeatWeight()[2],feat->getFeatWeight()[3]);
 	//cout<< "Player 1 isHit" << p1->getHit()<<endl;
 	// set previous features
 	feat->setPrevFeat(feat->getFeats());
 
-	double wallPun = checkBorder(p1);
-
-	int m_dist = abs(opp->getPos()[0] - p1->getPos()[0]);
-	p1->getAct()->setDist(m_dist);
 	double rwd = p1->updateHealth(opp->getAct());
 	// set reward. add up if the player hits the walls
 	setPrevReward(rwd+wallPun);	
 
-}
-
-double RLFAController::checkBorder( RLPlayer* p1 )
-{
-	double wallPun = 0;
-	int* newP = p1->getPos();
-	p1->setHit(-1);
-
-	if (newP[0] > getBorder()[1])
-	{
-		newP[0] = getBorder()[1];
-		p1->setPos(newP);
-		wallPun = -10;
-		p1->setHit(1);
-	}
-	else if (newP[0] < getBorder()[0])
-	{
-		newP[0] = getBorder()[0];
-		p1->setPos(newP);
-		wallPun = -10;
-		p1->setHit(1);
-	}
-	return wallPun;
+	delete newW;
+	newW = NULL;
 }
 
 RLFAController::RLFAController() /*: RLController()*/
